@@ -59,6 +59,9 @@ class FacadeProxy(private val passwordEncoder: BCryptPasswordEncoder, private va
     @GetMapping("/all")
     fun all() = usuarios
 
+    @GetMapping("/")
+    fun home() = StringResponse("Hey yooo")
+
     private fun generateToken(user: User): String {
         return JWT.create()
                 .withSubject(user.correo)
@@ -67,6 +70,8 @@ class FacadeProxy(private val passwordEncoder: BCryptPasswordEncoder, private va
     }
 
     private fun getId() = idCounter++
+
+
 }
 
 class StringResponse(val message: String)
