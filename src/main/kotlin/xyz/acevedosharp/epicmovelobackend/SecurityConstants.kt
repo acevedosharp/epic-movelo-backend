@@ -1,0 +1,4 @@
+package xyz.acevedosharp.epicmovelobackend
+
+const val SECRET_KEY = "146N6wJyde82iuwzRgbsKVN98xH3Et1FwTOnT7VGyTlTLYcLl559QDSaXVPIBJdRiUj9ictXzMAAaU8zRLoMq0GGIS7ZcNtxhlhQUX1c89Xa7yYNc5O3mruP0Ji5nOJI"
+const val JWT_DURATION = 43_200_000L // 12h
