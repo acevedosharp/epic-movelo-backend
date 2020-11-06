@@ -37,7 +37,7 @@ class FacadeProxy(private val passwordEncoder: BCryptPasswordEncoder, private va
 
         serviceFacade.componentes.add(biciusuario)
 
-        usuarios.add(User(biciusuario.id, biciusuario.correo, biciusuario.password))
+        usuarios.add(User(biciusuario.id, biciusuario.correo, biciusuario.contrasena))
 
         return StringResponse("Registrado con éxito.")
     }
@@ -49,7 +49,7 @@ class FacadeProxy(private val passwordEncoder: BCryptPasswordEncoder, private va
     ): StringResponse {
         val usuario = usuarios.find { it.correo == correo }
         if (usuario != null) {
-            if (passwordEncoder.matches(contrasena, usuario.password)) {
+            if (passwordEncoder.matches(contrasena, usuario.contrasena)) {
                 return StringResponse(generateToken(usuario))
             }
         }
