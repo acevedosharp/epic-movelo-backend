@@ -59,6 +59,9 @@ class FacadeProxy(private val passwordEncoder: BCryptPasswordEncoder, private va
     @GetMapping("/all")
     fun all() = usuarios
 
+    @GetMapping("/allBiciusuarios")
+    fun allBiciusuarios() = serviceFacade.componentes as List<Biciusuario>
+
     @GetMapping("/")
     fun home() = StringResponse("Hey yooo")
 
