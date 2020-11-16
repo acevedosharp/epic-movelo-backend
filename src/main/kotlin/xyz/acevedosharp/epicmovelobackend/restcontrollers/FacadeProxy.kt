@@ -49,7 +49,7 @@ class FacadeProxy(
 
         val biciusuario = Biciusuario(getId(), correo, pHash, cc, nombre, direccion, telefono)
 
-        serviceFacade.agregarBiciusuario(biciusuario)
+        serviceFacade.agregarComponente(biciusuario)
 
         return StringResponse("Registrado con éxito.")
     }
@@ -69,7 +69,7 @@ class FacadeProxy(
 
         val empresa = Empresa(getId(), correo, pHash, nit, nombre, direccion, telefono)
 
-        serviceFacade.agregarEmpresa(empresa)
+        serviceFacade.agregarComponente(empresa)
 
         return StringResponse("Registrado con éxito.")
     }

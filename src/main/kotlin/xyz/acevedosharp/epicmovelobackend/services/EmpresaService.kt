@@ -26,6 +26,7 @@ class EmpresaService(
         }
 
         empresas.add(empresa)
+        emitDataModified()
         return true
     }
 
@@ -41,6 +42,7 @@ class EmpresaService(
         realEmpresa.direccion = empresa.direccion
         realEmpresa.telefono = empresa.telefono
 
+        emitDataModified()
         return true
     }
 
@@ -86,7 +88,9 @@ class EmpresaService(
     fun eliminarComposicion(id1: Int, id2: Int): Boolean {
         val comp1 = consultarEmpresa(id1) ?: return false
 
-        return comp1.children.removeAll { (it as User).id == id2 }
+        val res = comp1.children.removeAll { (it as User).id == id2 }
+        emitDataModified()
+        return res
     }
 
     private fun emitDataModified() {
