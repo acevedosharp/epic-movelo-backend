@@ -1,6 +1,9 @@
 package xyz.acevedosharp.epicmovelobackend.services
 
+import org.springframework.context.ApplicationEventPublisher
+import org.springframework.context.annotation.Lazy
 import org.springframework.stereotype.Service
+import xyz.acevedosharp.epicmovelobackend.events.UpdateUsersCopyEvent
 import xyz.acevedosharp.epicmovelobackend.model.Biciusuario
 import xyz.acevedosharp.epicmovelobackend.model.Componente
 import xyz.acevedosharp.epicmovelobackend.model.Empresa
@@ -9,7 +12,7 @@ import xyz.acevedosharp.epicmovelobackend.restcontrollers.FacadeProxy
 
 @Service
 class ServiceFacade(
-        val facadeProxy: FacadeProxy,
+        val applicationEventPublisher: ApplicationEventPublisher,
         val empresaService: EmpresaService,
         val biciusuarioService: BiciusuarioService
 ) {
@@ -17,29 +20,12 @@ class ServiceFacade(
 
     // make facadeProxy map componentes again
     fun dumbCache() {
-        facadeProxy.updateUsersCopy()
+        applicationEventPublisher.publishEvent(UpdateUsersCopyEvent(this))
     }
 
     fun agregarComponente(componente: Componente) {
         componentes.add(componente)
         dumbCache()
-    }
-
-    fun eliminarComponente(id: Int): Boolean {
-        val comp = componentes.firstOrNull { (it as User).id  == id }
-
-        if (comp != null) {
-            // eliminate children if empresa
-            if (comp is Empresa) {
-                comp.children.forEach { eliminarComponente((it as User).id) }
-            }
-            // remove component
-            componentes.remove(comp)
-            dumbCache()
-        } else {
-            return false
-        }
-        return true
     }
 
     fun findById(id: Int): Componente? = componentes.find { (it as User).id == id}

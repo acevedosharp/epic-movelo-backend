@@ -2,12 +2,17 @@ package xyz.acevedosharp.epicmovelobackend.restcontrollers
 
 import com.auth0.jwt.JWT
 import com.auth0.jwt.algorithms.Algorithm
+import org.springframework.context.ApplicationContext
+import org.springframework.context.ApplicationContextAware
+import org.springframework.context.ApplicationListener
+import org.springframework.context.annotation.Lazy
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 import xyz.acevedosharp.epicmovelobackend.*
+import xyz.acevedosharp.epicmovelobackend.events.UpdateUsersCopyEvent
 import xyz.acevedosharp.epicmovelobackend.model.Biciusuario
 import xyz.acevedosharp.epicmovelobackend.model.Componente
 import xyz.acevedosharp.epicmovelobackend.model.Empresa
@@ -17,7 +22,11 @@ import java.lang.RuntimeException
 import java.util.*
 
 @RestController
-class FacadeProxy(private val passwordEncoder: BCryptPasswordEncoder, private val serviceFacade: ServiceFacade) {
+class FacadeProxy(
+        private val passwordEncoder: BCryptPasswordEncoder,
+        private val serviceFacade: ServiceFacade
+): ApplicationListener<UpdateUsersCopyEvent> {
+
     var idCounter = 0
     lateinit var usuarios: List<User>
 
@@ -154,6 +163,10 @@ class FacadeProxy(private val passwordEncoder: BCryptPasswordEncoder, private va
     }
 
     private fun getId() = idCounter++
+
+    override fun onApplicationEvent(event: UpdateUsersCopyEvent) {
+        updateUsersCopy()
+    }
 }
 
 class StringResponse(val message: String)
