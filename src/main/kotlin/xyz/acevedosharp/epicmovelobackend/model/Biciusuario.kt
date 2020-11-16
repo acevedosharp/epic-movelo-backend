@@ -4,16 +4,42 @@ class Biciusuario(
         id: Int,
         correo: String,
         contrasena: String,
-        val cc: String,
-        val nombre: String,
-        val direccion: String,
-        val telefono: String
+        var cc: String,
+        var nombre: String,
+        var direccion: String,
+        var telefono: String
 ) : User(id, correo, contrasena), Componente {
-    val bicicletas: List<Bicicleta> = arrayListOf()
-    val arbolesContribuidos: List<PuntoGeografico> = arrayListOf()
-    val metrosNoPlantados = 0
-    val metrosRecorridos = 0
-    val huellaCarbonoAcumulada = 0.0
+    val bicicletas = arrayListOf<Bicicleta>()
+    val arbolesContribuidos = arrayListOf<PuntoGeografico>()
+    var metrosNoPlantados = 0
+        private set
+    var metrosRecorridos = 0
+        private set
+    var huellaCarbonoAcumulada = 0.0
+        private set
+
+    fun addBicicleta(bicicleta: Bicicleta) = bicicletas.add(bicicleta)
+
+    fun addToHuella(cantidad: Double): Double {
+        huellaCarbonoAcumulada += cantidad
+        return huellaCarbonoAcumulada
+    }
+
+    fun addMetrosRecorridos(cantidad: Int): Int {
+        metrosRecorridos += cantidad
+        return metrosRecorridos
+    }
+
+    fun addMetrosNoPlantados(cantidad: Int): Int {
+        metrosNoPlantados += cantidad
+        return metrosNoPlantados
+    }
+
+    fun reiniciarMetrosNoPlantados() {
+        metrosNoPlantados = 0
+    }
+
+    fun addArbol(arbol: PuntoGeografico) = arbolesContribuidos.add(arbol)
 
     override fun mostrarInformacion() = println(this.toString())
 }

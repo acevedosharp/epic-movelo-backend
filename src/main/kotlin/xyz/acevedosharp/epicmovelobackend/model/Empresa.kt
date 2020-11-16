@@ -4,12 +4,16 @@ class Empresa(
         id: Int,
         correo: String,
         password: String,
-        val nit: String,
-        val nombre: String,
-        val direccion: String,
-        val telefono: String
+        var nit: String,
+        var nombre: String,
+        var direccion: String,
+        var telefono: String
 ) : User(id, correo, password), Componente {
-    val children: List<Componente> = arrayListOf()
+    val children = arrayListOf<Componente>()
 
     override fun mostrarInformacion() = println(this.toString())
+
+    fun addComponente(componente: Componente) = children.add(componente)
+
+    fun deleteComponente(id: Int) = children.removeIf { (it as User).id == id }
 }
