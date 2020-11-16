@@ -1,8 +1,10 @@
 package xyz.acevedosharp.epicmovelobackend.services
 
 import org.springframework.context.ApplicationEventPublisher
+import org.springframework.context.ApplicationListener
 import org.springframework.context.annotation.Lazy
 import org.springframework.stereotype.Service
+import xyz.acevedosharp.epicmovelobackend.events.UpdateComponentsCopyEvent
 import xyz.acevedosharp.epicmovelobackend.events.UpdateUsersCopyEvent
 import xyz.acevedosharp.epicmovelobackend.model.Biciusuario
 import xyz.acevedosharp.epicmovelobackend.model.Componente
@@ -15,8 +17,12 @@ class ServiceFacade(
         val applicationEventPublisher: ApplicationEventPublisher,
         val empresaService: EmpresaService,
         val biciusuarioService: BiciusuarioService
-) {
+): ApplicationListener<UpdateComponentsCopyEvent> {
     val componentes = arrayListOf<Componente>()
+
+    init {
+        updateComponentsCopy()
+    }
 
     // make facadeProxy map componentes again
     fun dumbCache() {
@@ -45,5 +51,15 @@ class ServiceFacade(
         val res = biciusuarioService.actualizarBiciusuario(biciusuario)
         if (res) dumbCache()
         return res
+    }
+
+
+    private fun updateComponentsCopy() {
+        componentes.clear()
+        componentes.addAll(empresaService.empresas)
+        componentes.addAll(biciusuarioService.biciusuarios)
+    }
+    override fun onApplicationEvent(event: UpdateComponentsCopyEvent) {
+        updateComponentsCopy()
     }
 }
