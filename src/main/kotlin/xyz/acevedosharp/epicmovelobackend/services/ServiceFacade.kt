@@ -12,16 +12,19 @@ import xyz.acevedosharp.epicmovelobackend.model.Empresa
 import xyz.acevedosharp.epicmovelobackend.model.User
 import xyz.acevedosharp.epicmovelobackend.restcontrollers.FacadeProxy
 
+@Suppress("LeakingThis")
 @Service
 class ServiceFacade(
         val applicationEventPublisher: ApplicationEventPublisher,
         val empresaService: EmpresaService,
         val biciusuarioService: BiciusuarioService
 ): ApplicationListener<UpdateComponentsCopyEvent> {
-    val componentes = arrayListOf<Componente>()
+    final val componentes = arrayListOf<Componente>()
 
     init {
-        updateComponentsCopy()
+        componentes.clear()
+        componentes.addAll(empresaService.empresas)
+        componentes.addAll(biciusuarioService.biciusuarios)
     }
 
     // make facadeProxy map componentes again
